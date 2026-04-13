@@ -11,11 +11,11 @@ from tqdm import tqdm
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 INP = PROJECT_ROOT / "data" / "processed" / "features.parquet"
 
-# Vamos gravar como dataset (pasta) para suportar escrita incremental
+# grava como dataset (pasta) para suportar escrita incremental
 OUT_DIR = PROJECT_ROOT / "data" / "processed" / "features_lag"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
-# Colunas que vamos criar lag1/diff1 (mantém enxuto)
+# Colunas criadas lag1/diff1
 BASE_COLS = [
     "total_secs", "num_unq", "paid_sum", "plays_total",
     "has_usage", "has_payment", "auto_renew_rate", "cancel_txn_count"
@@ -37,11 +37,11 @@ def main():
     data = ds.dataset(str(INP), format="parquet")
     # Descobre meses disponíveis sem carregar tudo
     safra_vals = data.to_table(columns=["safra"]).column("safra").to_pylist()
-    # safra_vals pode ser grande; então vamos usar pyarrow compute unique
+  
     safra_unique = ds.dataset(str(INP), format="parquet").to_table(columns=["safra"]).column("safra").unique().to_pylist()
     months = sorted([int(x) for x in safra_unique if x is not None])
 
-    # mantemos apenas colunas necessárias + chaves
+    # apenas colunas necessárias + chaves
     wanted_cols = ["msno", "safra"] + [c for c in BASE_COLS if c in data.schema.names]
     # garante existência
     wanted_cols = [c for c in wanted_cols if c in data.schema.names]
@@ -80,8 +80,8 @@ def main():
         # Só cria lag se o mês anterior for exatamente month-1
         # (se tiver buracos, lag fica NaN)
         expected_prev = month - 1
-        # mas como YYYYMM não é linear, usamos função
-        # aqui vamos checar se prev_month é o mês imediatamente anterior
+        # mas como YYYYMM não é linear, usa função
+        # aqui checa se prev_month é o mês imediatamente anterior
         # gerando month anterior a partir do prev_month e comparando:
         is_consecutive = (add_1_month(prev_month) == month)
 

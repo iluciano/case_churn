@@ -1,0 +1,10 @@
+data/
+*.parquet
+*.csv
+*.zip
+__pycache__/
+.ipynb_checkpoints/
+.venv/
+.env
+.DS_Store
+reports/figures/*.png

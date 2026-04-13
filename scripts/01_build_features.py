@@ -32,7 +32,7 @@ def agg_add(base: pd.DataFrame | None, add: pd.DataFrame, keys=("msno","safra"))
     if base is None:
         return add
     out = pd.concat([base, add], ignore_index=True)
-    # soma apenas numéricos; para métricas de mean, tratamos separado
+    # soma apenas numéricos;
     return out.groupby(list(keys), as_index=False).sum(numeric_only=True)
 
 def agg_user_logs(path: Path) -> pd.DataFrame:
@@ -53,7 +53,7 @@ def agg_user_logs(path: Path) -> pd.DataFrame:
         play_cols = ["num_25","num_50","num_75","num_985","num_100"]
         df["plays_total"] = df[play_cols].sum(axis=1)
 
-        # vamos acumular numerador/denominador para calcular rates no final
+        # acumular numerador/denominador para calcular rates no final
         df["completion_num"] = (
             0.25*df["num_25"] + 0.50*df["num_50"] + 0.75*df["num_75"] + 0.985*df["num_985"] + 1.0*df["num_100"]
         )
@@ -89,7 +89,7 @@ def agg_transactions(path: Path) -> pd.DataFrame:
     cols = ["msno","safra","actual_amount_paid","plan_list_price","payment_plan_days","is_auto_renew","is_cancel"]
     cols = [c for c in cols if c in pf.schema.names]
 
-    # Para médias, acumulamos sum e count
+    # Para médias, acumula sum e count
     acc = None
     for rg in tqdm(range(pf.num_row_groups), desc="transactions"):
         df = pf.read_row_group(rg, columns=cols).to_pandas()
