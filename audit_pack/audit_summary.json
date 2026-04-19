@@ -1,0 +1,101 @@
+{
+  "label_trust": {
+    "rows": 23,
+    "months": [
+      201501,
+      201611
+    ],
+    "suspect_months": [
+      201501,
+      201502,
+      201503,
+      201504,
+      201505,
+      201506,
+      201507,
+      201508,
+      201509,
+      201510,
+      201511,
+      201512,
+      201610,
+      201611
+    ]
+  },
+  "scores_test": {
+    "rows": 2987795,
+    "cols": 4,
+    "base_churn": 0.04739347913762491,
+    "top_1": {
+      "k": 29877,
+      "recall": 0.0029236875185378736,
+      "churn_rate": 0.013856812933025405
+    },
+    "top_3": {
+      "k": 89633,
+      "recall": 0.013220152257736473,
+      "churn_rate": 0.020885165061974943
+    },
+    "top_5": {
+      "k": 149389,
+      "recall": 0.08788011468764566,
+      "churn_rate": 0.083299305839118
+    },
+    "top_10": {
+      "k": 298779,
+      "recall": 0.33447267693959126,
+      "churn_rate": 0.158518503643161
+    },
+    "top_20": {
+      "k": 597559,
+      "recall": 0.740653380601969,
+      "churn_rate": 0.17551070270885386
+    },
+    "columns": [
+      "msno",
+      "safra",
+      "churn_3m",
+      "p_churn"
+    ]
+  },
+  "model_table": {
+    "rows": 17026533,
+    "cols": 32,
+    "columns": [
+      "msno",
+      "total_secs",
+      "num_unq",
+      "paid_sum",
+      "plays_total",
+      "has_usage",
+      "has_payment",
+      "auto_renew_rate",
+      "cancel_txn_count",
+      "total_secs_lag1",
+      "total_secs_diff1",
+      "num_unq_lag1",
+      "num_unq_diff1",
+      "paid_sum_lag1",
+      "paid_sum_diff1",
+      "plays_total_lag1",
+      "plays_total_diff1",
+      "has_usage_lag1",
+      "has_usage_diff1",
+      "has_payment_lag1",
+      "has_payment_diff1",
+      "auto_renew_rate_lag1",
+      "auto_renew_rate_diff1",
+      "cancel_txn_count_lag1",
+      "cancel_txn_count_diff1",
+      "is_ativo",
+      "is_ativo_fut",
+      "churn_3m",
+      "label_trust",
+      "fut_active_rate",
+      "churn_rate_month",
+      "safra"
+    ],
+    "safra_min": 201501,
+    "safra_max": 201611
+  }
+}

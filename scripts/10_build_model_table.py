@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import shutil
 import numpy as np
 import pandas as pd
 import pyarrow as pa
@@ -36,6 +37,16 @@ def read_status_month(dataset: ds.Dataset, month: int) -> pd.DataFrame:
     d["is_ativo"] = pd.to_numeric(d["is_ativo"], errors="coerce").fillna(0).astype("int8")
     return d.drop_duplicates(["msno", "safra"])
 
+
+def reset_output_dir(path: Path) -> None:
+    """
+    Garante idempotência da model_table particionada.
+    Sem limpeza prévia, reruns acumulam partições antigas e duplicam linhas.
+    """
+    if path.exists():
+        shutil.rmtree(path)
+    path.mkdir(parents=True, exist_ok=True)
+
 def main():
     base_ds = ds.dataset(str(FEAT_BASE_PATH), format="parquet")
 
@@ -49,6 +60,9 @@ def main():
 
     min_m, max_m = months[0], months[-1]
     print(f"Meses features_lag: {min_m} -> {max_m} | n_months={len(months)}")
+
+    reset_output_dir(OUT_DIR)
+    print(f"Diretório de saída resetado: {OUT_DIR}")
 
     # -------------------------
     # 1) Diagnóstico por mês (label_trust)
@@ -117,7 +131,6 @@ def main():
         feat = pd.read_parquet(lag_part)
         feat["msno"] = feat["msno"].astype("string")
 
-        # IMPORTANT: ao ler partição, 'safra' pode não vir como coluna -> injeta
         feat["safra"] = np.int32(m)
 
         st_now = read_status_month(base_ds, m)[["msno","is_ativo"]]
